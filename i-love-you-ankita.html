@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I love you Ankita ❤️</title>
+  <style>
+    :root{
+      --bg1:#ff9a9e;
+      --bg2:#fad0c4;
+      --bg3:#fbc2eb;
+      --accent:#ff2d95;
+      --glass: rgba(255,255,255,0.12);
+    }
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    body{
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+      animation: bgShift 10s ease-in-out infinite;
+    }
+    @keyframes bgShift{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+    .card{
+      width:min(980px,92vw);
+      padding:36px;border-radius:18px;backdrop-filter: blur(6px);
+      box-shadow:0 8px 30px rgba(0,0,0,0.15);background:linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      text-align:center;color:#fff
+    }
+    h1{
+      margin:0;font-size:clamp(28px,6vw,64px);letter-spacing:0.02em;line-height:1.02;font-weight:800;
+      text-shadow:0 6px 20px rgba(0,0,0,0.25);
+    }
+    .heart{
+      display:inline-block;margin-left:12px;font-size:1.05em;transform-origin:center center;
+      animation: pulse 1s infinite ease-in-out;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
+    }
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.16)}
+      100%{transform:scale(1)}
+    }
+    p.lead{margin:18px 0 26px;font-size:clamp(14px,2.2vw,18px);opacity:0.95}
+    .controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{padding:10px 18px;border-radius:12px;border:0;cursor:pointer;font-weight:700;background:linear-gradient(90deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));color:#fff}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#ff6fb9);box-shadow:0 8px 20px rgba(255,70,150,0.18)}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.12)}
+    small.note{display:block;margin-top:12px;opacity:0.85}
+    footer{margin-top:18px;font-size:12px;opacity:0.7}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <h1 id="mainText">I love you Ankita <span class="heart" aria-hidden="true">❤️</span></h1>
+    <p class="lead">A little page made just for her — open this on any browser and share the link.</p>
+
+    <div class="controls">
+      <button class="btn primary" id="copyBtn">Copy message text</button>
+      <button class="btn ghost" id="downloadBtn">Download .txt</button>
+      <button class="btn" id="shareBtn">Share (if supported)</button>
+    </div>
+
+    <small class="note">Tip: Host this file on Vercel / Netlify / GitHub Pages to get a public link. Then share that URL.</small>
+    <footer>Made with ❤️</footer>
+  </div>
+
+  <script>
+    const text = 'I love you Ankita ❤️';
+    const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const shareBtn = document.getElementById('shareBtn');
+
+    copyBtn.addEventListener('click', async () => {
+      try{
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(()=>copyBtn.textContent='Copy message text',1500);
+      }catch(e){
+        alert('Copy failed — select the text and press Ctrl/Cmd+C');
+      }
+    });
+
+    downloadBtn.addEventListener('click', ()=>{
+      const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'I-love-you-Ankita.txt'; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    shareBtn.addEventListener('click', async ()=>{
+      if(navigator.share){
+        try{
+          await navigator.share({title:'I love you Ankita',text:text,url:location.href});
+        }catch(err){/* user cancelled */}
+      }else{
+        alert('Share not supported on this browser. Try copying the link or text.');
+      }
+    });
+  </script>
+</body>
+</html>
